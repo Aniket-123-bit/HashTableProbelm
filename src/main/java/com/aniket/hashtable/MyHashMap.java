@@ -3,54 +3,80 @@ import java.util.ArrayList;
 
 public class MyHashMap<K, V> {
 
-        private int numBuckets;
-        ArrayList<MyLinkedList<K>> myBucketArray;
+    private int numBuckets;
+    ArrayList<MyLinkedList<K>> myBucketArray;
 
-        public void MyLinkedHashMap() {
-            this.numBuckets = 10;
-            this.myBucketArray = new ArrayList<>(numBuckets);
-            for (int i = 0; i < numBuckets; i++) {
-                this.myBucketArray.add(null);
-            }
-        }
+    public MyHashMap() {
 
-        //using hashcode to finding index
-        private int getBucketIndex(K key) {
-            int hashCode = Math.abs(key.hashCode());
-            int index = hashCode % numBuckets;
-            return index;
-        }
+    }
 
-        /*Created LinkedList for each index
-        Used linked list to do hash table operations
-         */
-        public V get(K key) {
-            int index = this.getBucketIndex(key);
-            MyLinkedList<K> myLinkedList = this.myBucketArray.get(index);
-            if (myLinkedList == null)
-                return null;
-            MyHashMapNode<K, V> myMapNode = (MyHashMapNode<K, V>) myLinkedList.search(key);
-            return (myMapNode == null) ? null : myMapNode.getValue();
-        }
-
-        public void add(K key, V value) {
-            int index = this.getBucketIndex(key);
-            MyLinkedList<K> myLinkedList = this.myBucketArray.get(index);
-            if (myLinkedList == null) {
-                myLinkedList = new MyLinkedList<>();
-                this.myBucketArray.set(index, myLinkedList);
-            }
-            MyHashMapNode<K, V> myMapNode = (MyHashMapNode<K, V>) myLinkedList.search(key);
-            if (myMapNode == null) {
-                myMapNode = new MyHashMapNode<>(key, value);
-                myLinkedList.append(myMapNode);
-            } else {
-                myMapNode.setValue(value);
-            }
-        }
-
-        @Override
-        public String toString() {
-            return "MyLinkedHashMap List{"+ myBucketArray+ '}';
+    public void MyLinkedHashMap() {
+        this.numBuckets = 10;
+        this.myBucketArray = new ArrayList<>(numBuckets);
+        for (int i = 0; i < numBuckets; i++) {
+            this.myBucketArray.add(null);
         }
     }
+
+    public MyHashMap(int numBuckets) {
+        this.numBuckets = numBuckets;
+    }
+
+    //using hashcode to finding index
+    private int getBucketIndex(K key) {
+        int hashCode = Math.abs(key.hashCode());
+        int index = hashCode % numBuckets;
+        return index;
+    }
+
+    /*Created LinkedList for each index
+    Used linked list to do hash table operations
+     */
+    public V get(K key) {
+        int index = this.getBucketIndex(key);
+        MyLinkedList<K> myLinkedList = this.myBucketArray.get(index);
+        if (myLinkedList == null)
+            return null;
+        MyHashMapNode<K, V> myMapNode = (MyHashMapNode<K, V>) myLinkedList.search(key);
+        return (myMapNode == null) ? null : myMapNode.getValue();
+    }
+
+    public void add(K key, V value) {
+        int index = this.getBucketIndex(key);
+        MyLinkedList<K> myLinkedList = this.myBucketArray.get(index);
+        if (myLinkedList == null) {
+            myLinkedList = new MyLinkedList<>();
+            this.myBucketArray.set(index, myLinkedList);
+        }
+        MyHashMapNode<K, V> myMapNode = (MyHashMapNode<K, V>) myLinkedList.search(key);
+        if (myMapNode == null) {
+            myMapNode = new MyHashMapNode<>(key, value);
+            myLinkedList.append(myMapNode);
+        } else {
+            myMapNode.setValue(value);
+        }
+    }
+
+    /*Created MyHashMapNode with key value pair and created LinkedList*/
+    public MyHashMapNode<K,V> remove(K key) {
+        int index = this.getBucketIndex(key);
+        MyLinkedList<K> myLinkedList = this.myBucketArray.get(index);
+        if(myLinkedList==null)
+            return null;
+        else {
+            MyHashMapNode<K, V> myMapNode = (MyHashMapNode<K, V>) myLinkedList.search(key);
+            if(myMapNode==null) {
+                return null;
+            }
+            else {
+                MyHashMapNode<K, V> deletedNode = (MyHashMapNode<K, V>) myLinkedList.removeParticularNode(myMapNode);
+                return deletedNode;
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "MyLinkedHashMap List{"+ myBucketArray+ '}';
+    }
+}
