@@ -5,23 +5,25 @@ import org.junit.Test;
 
 public class MyHashMapTest {
 
-    /*Finding frequency of words in a sentence*/
+    /*Finding frequency of words in a large paragraph phrase*/
     @Test
     public void giveASentence_whenWordsAreAddedToList_ShouldReturnWordFrequency() {
-        String sentence = "To be or not to be";
-        MyHashMap<String ,Integer> myHashMap = new MyHashMap();
+        String sentence = "Paranoids are not paranoid because they are paranoid "+
+                "but because they keep putting themselves "+
+                "deliberately into paranoid avoidable situations";
+        MyHashMap<String, Integer> myLinkedHashMap = new MyHashMap<>();
         String[] words = sentence.toLowerCase().split(" ");
         for(String word : words) {
-            Integer value = myHashMap.get(word);
+            Integer value = myLinkedHashMap.get(word);
             if(value == null)
                 value = 1;
             else
                 value = value + 1;
-            myHashMap.add(word, value);
+            myLinkedHashMap.add(word, value);
         }
-        int frequency = myHashMap.get("to");
-        System.out.println(myHashMap);
-        Assert.assertEquals(2, frequency);
+        System.out.println(myLinkedHashMap);
+        int frequency = myLinkedHashMap.get("paranoid");
+        Assert.assertEquals(3, frequency);
     }
 
 }
